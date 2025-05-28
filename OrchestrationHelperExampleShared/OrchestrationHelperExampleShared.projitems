@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>606750e0-6dcc-4e0b-aa21-4e9871d8175e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>OrchestrationHelperExampleShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ParameterGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ParameterInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ScriptInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ScriptInput.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ScriptOutput.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ValueInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\Dialogs\GetOrchestrationValuesDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\DisplayTypes\DropdownParameterDisplayInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\DisplayTypes\IParameterDisplayInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\DisplayTypes\IParameterGroupDisplayInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\DisplayTypes\NumericParameterDisplayInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\DisplayTypes\PresetGroupDisplayInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\Sections\DropdownParameterSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\Sections\NumericParameterSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\Sections\ParameterGroupSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\Sections\ParameterSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvc\Sections\PresetGroupSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\OrchestrationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\OrchestrationHelperInfoFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\OrchestrationHelperWithInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\OrchestrationScript.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\OrchestrationScriptAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ParameterProvider\IParameterLinker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ParameterProvider\ProfileParameterProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScriptInfoBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\SerializeModelsHelper.cs" />
+  </ItemGroup>
+</Project>

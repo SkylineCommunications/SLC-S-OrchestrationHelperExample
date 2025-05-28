@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchestrationHelperExamplePackage", "OrchestrationHelperExamplePackage\OrchestrationHelperExamplePackage.csproj", "{C7D98251-E9A6-41CD-875F-226A0CF08D70}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OrchestrationHelperExampleShared", "OrchestrationHelperExampleShared\OrchestrationHelperExampleShared.shproj", "{606750E0-6DCC-4E0B-AA21-4E9871D8175E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchestrationHelperExample.Common", "OrchestrationHelperExample.Common\OrchestrationHelperExample.Common.csproj", "{D527D3EE-6DDC-4D61-9589-1784749B44CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Internal", "Internal", "{E0AA6E8C-0D66-4686-A677-274AF7A491AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Analysis", "Code Analysis", "{809E500B-2C71-48D4-9E93-CE03FE3D88F3}"
+	ProjectSection(SolutionItems) = preProject
+		Internal\Code Analysis\qaction-debug.ruleset = Internal\Code Analysis\qaction-debug.ruleset
+		Internal\Code Analysis\qaction-release.ruleset = Internal\Code Analysis\qaction-release.ruleset
+		Internal\Code Analysis\stylecop.json = Internal\Code Analysis\stylecop.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchestrationHelperExample - Get Orchestration Info", "OrchestrationHelperExample - Get Orchestration Info\OrchestrationHelperExample - Get Orchestration Info.csproj", "{C2CBBB85-676F-4EA3-8DB3-9A953CD9010F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchestrationHelperExample - Perform Orchestration", "OrchestrationHelperExample - Perform Orchestration\OrchestrationHelperExample - Perform Orchestration.csproj", "{A1BC4B20-7A16-4480-94C0-6CFB71FF9198}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchestrationHelperExample - Orchestration script example", "OrchestrationHelperExample - Orchestration script example\OrchestrationHelperExample - Orchestration script example.csproj", "{DAC20681-877E-4631-962A-FEA6F4B4497F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C7D98251-E9A6-41CD-875F-226A0CF08D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7D98251-E9A6-41CD-875F-226A0CF08D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7D98251-E9A6-41CD-875F-226A0CF08D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7D98251-E9A6-41CD-875F-226A0CF08D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D527D3EE-6DDC-4D61-9589-1784749B44CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D527D3EE-6DDC-4D61-9589-1784749B44CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D527D3EE-6DDC-4D61-9589-1784749B44CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D527D3EE-6DDC-4D61-9589-1784749B44CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2CBBB85-676F-4EA3-8DB3-9A953CD9010F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2CBBB85-676F-4EA3-8DB3-9A953CD9010F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2CBBB85-676F-4EA3-8DB3-9A953CD9010F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2CBBB85-676F-4EA3-8DB3-9A953CD9010F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1BC4B20-7A16-4480-94C0-6CFB71FF9198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1BC4B20-7A16-4480-94C0-6CFB71FF9198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1BC4B20-7A16-4480-94C0-6CFB71FF9198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1BC4B20-7A16-4480-94C0-6CFB71FF9198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAC20681-877E-4631-962A-FEA6F4B4497F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAC20681-877E-4631-962A-FEA6F4B4497F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAC20681-877E-4631-962A-FEA6F4B4497F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC20681-877E-4631-962A-FEA6F4B4497F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{809E500B-2C71-48D4-9E93-CE03FE3D88F3} = {E0AA6E8C-0D66-4686-A677-274AF7A491AA}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		OrchestrationHelperExampleShared\OrchestrationHelperExampleShared.projitems*{606750e0-6dcc-4e0b-aa21-4e9871d8175e}*SharedItemsImports = 13
+		OrchestrationHelperExampleShared\OrchestrationHelperExampleShared.projitems*{d527d3ee-6ddc-4d61-9589-1784749b44cd}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal

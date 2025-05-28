@@ -1,0 +1,102 @@
+# This is a basic workflow, without the standard Skyline Quality Gate. It serves as a start and an example that can be extended as required.
+# Important: Every change to the master or main branch will upload a new package to the Catalog using a new prerelease version.
+# A stable release can be done by creating a tag or a GitHub Release.
+
+
+name: Basic Workflow
+
+on:
+  push:
+    branches: [ "master", "main" ]
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+.[0-9]+-**"
+      - "[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+-**"
+    
+      # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+        
+    - name: Validate DataMiner Secret Token
+      id: validate-dataminer-token
+      run: |
+        if [[ -z "${{ secrets.DATAMINER_TOKEN }}" ]]; then
+          echo "Error: DATAMINER_TOKEN is not set. Release not possible!"
+          echo "Please create or re-use an admin.dataminer.services token by visiting: https://admin.dataminer.services/."
+          echo "Navigate to the right organization, then go to Keys and create or find a key with permissions Register catalog items, Download catalog versions, and Read catalog items."
+          echo "Copy the value of the token."
+          repo_url="https://github.com/${{ github.repository }}/settings/secrets/actions"
+          echo "Then set a DATAMINER_TOKEN secret in your repository settings: $repo_url"
+          exit 1
+        fi
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install Mono
+      run: |
+        sudo apt update
+        sudo apt install -y mono-complete
+
+    - name: Authenticate with GitHub CLI
+      run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
+    - name: Find Version Comment
+      id: findVersionComment
+      run: |
+        echo "Checking for release notes associated with the reference: '${{ github.ref_name }}'"
+    
+        # Retrieve the release note body
+        RELEASE_NOTE=$(gh release view "${{ github.ref_name }}" --json body -q '.body' 2>/dev/null || echo "")
+    
+        if [[ -n "$RELEASE_NOTE" ]]; then
+          echo "Release note found for '${{ github.ref_name }}': $RELEASE_NOTE"
+          # Escape multiline string for GITHUB_OUTPUT
+          echo "versionComment<<EOF" >> $GITHUB_OUTPUT
+          echo "$RELEASE_NOTE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        else
+          echo "No release note found for '${{ github.ref_name }}'. Falling back to tag or commit message."
+          VERSION_COMMENT=$(git describe --tags --exact-match 2>/dev/null || git log -1 --pretty=format:%s)
+          echo "Fallback version comment: $VERSION_COMMENT"
+          # Escape fallback as well
+          echo "versionComment=$VERSION_COMMENT" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
+    - name: Test
+      run: dotnet test -c Release
+      
+    - name: Publish Prerelease
+      if: github.ref_type == 'branch'
+      env:
+        DATAMINER_TOKEN: ${{ secrets.DATAMINER_TOKEN }}
+      shell: pwsh
+      run: |
+        dotnet publish `
+          -p:Version="0.0.${{ github.run_number }}" `
+          -p:VersionComment="${{ steps.findVersionComment.outputs.versionComment }}" `
+          -p:CatalogPublishKeyName="DATAMINER_TOKEN" `
+          -p:CatalogDefaultDownloadKeyName="DATAMINER_TOKEN" `
+          -c Release `
+
+    - name: Publish Release
+      if: github.ref_type == 'tag'
+      env:
+        DATAMINER_TOKEN: ${{ secrets.DATAMINER_TOKEN }}
+      shell: pwsh
+      run: |
+        dotnet publish `
+          -p:Version="${{ github.ref_name }}" `
+          -p:VersionComment="${{ steps.findVersionComment.outputs.versionComment }}" `
+          -p:CatalogPublishKeyName="DATAMINER_TOKEN" `
+          -p:CatalogDefaultDownloadKeyName="DATAMINER_TOKEN" `
+          -c Release `
