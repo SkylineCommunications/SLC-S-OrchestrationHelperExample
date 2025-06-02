@@ -1,5 +1,5 @@
 <CatalogReferences xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.skyline.be/catalogReferences">
-<!--
+	<!--
 	<CatalogReference id="guid">
 		<Name>Example Catalog Item (Specific Version)</Name>
 		<Selection>
@@ -19,4 +19,11 @@
 		</Selection>
 	</CatalogReference>
 -->
+
+	<CatalogReference id="73b79bb5-0fb2-41ee-ae5f-c6b6020f909e">
+		<Name>Generic Dynamic Table (1.0.0.4)</Name>
+		<Selection>
+			<Specific>1.0.0.4</Specific>
+		</Selection>
+	</CatalogReference>
 </CatalogReferences>

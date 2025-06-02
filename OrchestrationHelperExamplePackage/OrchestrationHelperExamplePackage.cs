@@ -50,38 +50,93 @@ DATE		VERSION		AUTHOR			COMMENTS
 */
 
 using System;
-
+using System.Linq;
 using Skyline.AppInstaller;
 using Skyline.DataMiner.Automation;
 using Skyline.DataMiner.Net.AppPackages;
+using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Setup;
+using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Setup.TestProfilesInfo;
+using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+using Skyline.DataMiner.Core.DataMinerSystem.Common;
+using Skyline.DataMiner.Net.Profiles;
 
 /// <summary>
 /// DataMiner Script Class.
 /// </summary>
 internal class Script
 {
-    /// <summary>
-    /// The script entry point.
-    /// </summary>
-    /// <param name="engine">Provides access to the Automation engine.</param>
-    /// <param name="context">Provides access to the installation context.</param>
-    [AutomationEntryPoint(AutomationEntryPointType.Types.InstallAppPackage)]
-    public void Install(IEngine engine, AppInstallContext context)
-    {
-        try
-        {
-            engine.Timeout = new TimeSpan(0, 10, 0);
-            engine.GenerateInformation("Starting installation");
-            var installer = new AppInstaller(Engine.SLNetRaw, context);
-            installer.InstallDefaultContent();
+	/// <summary>
+	/// The script entry point.
+	/// </summary>
+	/// <param name="engine">Provides access to the Automation engine.</param>
+	/// <param name="context">Provides access to the installation context.</param>
+	[AutomationEntryPoint(AutomationEntryPointType.Types.InstallAppPackage)]
+	public void Install(IEngine engine, AppInstallContext context)
+	{
+		try
+		{
+			engine.Timeout = new TimeSpan(0, 10, 0);
+			engine.GenerateInformation("Starting installation");
+			var installer = new AppInstaller(Engine.SLNetRaw, context);
+			installer.InstallDefaultContent();
 
-            ////string setupContentPath = installer.GetSetupContentDirectory();
+			PrepareTestDevice(engine);
+			CreateProfiles(engine);
+		}
+		catch (Exception e)
+		{
+			engine.ExitFail($"Exception encountered during installation: {e}");
+		}
+	}
 
-            // Custom installation logic can be added here for each individual install package.
-        }
-        catch (Exception e)
-        {
-            engine.ExitFail($"Exception encountered during installation: {e}");
-        }
-    }
+	private static void CreateProfiles(IEngine engine)
+	{
+		Logger.Log("Creating profiles...");
+		var profileHelper = new ProfileHelper(engine.SendSLNetMessages);
+		profileHelper.ProfileParameters.AddOrUpdateBulk(Parameters.GetAllParameters().ToArray());
+		profileHelper.ProfileDefinitions.AddOrUpdateBulk(TestDefinition.Definition);
+		profileHelper.ProfileInstances.AddOrUpdateBulk(Instances.GetAllInstances().ToArray());
+		Logger.Log("Done creating profiles...");
+	}
+
+	private static void PrepareTestDevice(IEngine engine)
+	{
+		Logger.Log($"Preparing '{TestDeviceInfo.ElementName}'...");
+		var testDevice = engine.FindElement(TestDeviceInfo.ElementName);
+
+		if (testDevice is null)
+		{
+			var dms = engine.GetDms();
+			var dma = dms.GetAgent(engine.GetUserConnection().ServerDetails.AgentID);
+			var protocol = dms.GetProtocol(TestDeviceInfo.ProtocolName, TestDeviceInfo.ProtocolVersion);
+			var elementConfiguration = new ElementConfiguration(dms, TestDeviceInfo.ElementName, protocol);
+			_ = dma.CreateElement(elementConfiguration);
+		}
+
+		object commandDelimiterRaw = null;
+		for (var i = 1; i <= 10 && (testDevice?.IsActive != true || commandDelimiterRaw is null); i++)
+		{
+			testDevice = engine.FindElement(TestDeviceInfo.ElementName);
+			testDevice?.Start();
+			Logger.Log($"Attempt {i}: Waiting for the test device '{TestDeviceInfo.ElementName}' to become active...");
+			engine.Sleep(3_000);
+			if (testDevice?.IsActive == true)
+			{
+				commandDelimiterRaw = testDevice.GetParameter(TestDeviceInfo.CommandDelimiterParameterName);
+			}
+		}
+
+		if (testDevice?.IsActive != true)
+		{
+			engine.ExitFail($"Failed to create or activate the test device '{TestDeviceInfo.ElementName}' after multiple attempts.");
+			return;
+		}
+
+		Logger.Log($"Test device '{testDevice.ElementName}' ({testDevice.DmaId}/{testDevice.ElementId}) is available and active...");
+
+		var commandDelimiter = commandDelimiterRaw as string
+			?? throw new InvalidOperationException($"Command delimiter of '{testDevice.ElementName}' ({testDevice.DmaId}/{testDevice.ElementId}) isn't available. (Raw value: {commandDelimiterRaw})");
+		var entryKeys = string.Join(commandDelimiter, TestDeviceInfo.EntryKeys);
+		testDevice.SetParameter(TestDeviceInfo.AddEntriesParameterName, entryKeys);
+	}
 }

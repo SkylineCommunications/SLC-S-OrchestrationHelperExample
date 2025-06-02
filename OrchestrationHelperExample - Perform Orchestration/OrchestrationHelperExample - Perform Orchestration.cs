@@ -53,11 +53,12 @@ namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Script.GetOrchestra
 {
 	using System;
 	using System.Collections.Generic;
-	using Skyline.DataMiner.Net;
-	using Skyline.DataMiner.Net.Automation;
 	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Helpers;
 	using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Models;
+	using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Setup;
+	using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Setup.TestProfilesInfo;
 
 	/// <summary>
 	/// Represents a DataMiner Automation script.
@@ -103,16 +104,16 @@ namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Script.GetOrchestra
 
 		private void RunSafe(IEngine engine)
 		{
-			// todo DCP257459 .FindInteractiveClient(
+			// todo DCP257459 .FindInteractiveClient( / Script should eventually be marked as Interactivity:Optional
 			var valueInfo = OrchestrationHelper.GetValueInfo(new Dictionary<DMAObjectRef, object>
 			{
-				{ new ProfileParameterID(new Guid("b1377a1d-f886-45bc-8329-90523c6ffe7c")), 12_345d },
-				{ new ProfileParameterID(new Guid("51824d5b-ac6f-4cb7-a553-71c385935b16")), "DVB-S2" },
-				{ new ProfileParameterID(new Guid("58f1ab17-ed09-40f6-8aa2-2f8e9fd721ae")), "15%" },
-				{ new ProfileParameterID(new Guid("8cff7984-2028-4147-ac5c-3acd4a623c2f")), 1d },
+				{ new ProfileParameterID(Parameters.RfFrequency.Id), 12_345d },
+				{ new ProfileParameterID(Parameters.RfModulation.Id), "DVB-S2" },
+				{ new ProfileParameterID(Parameters.RfRollOff.Id), "15%" },
+				{ new ProfileParameterID(Parameters.RfSymbolRate.Id), 1d },
 			});
 
-			var device = engine.FindElement("OrchestrationHelperExample - Device");
+			var device = engine.FindElement(TestDeviceInfo.ElementName);
 			OrchestrationHelper.Orchestrate(
 				engine,
 				"OrchestrationHelperExample - Orchestration script example",

@@ -65,18 +65,18 @@ namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.OrchestrationScript
 			return new IParameter[]
 			{
 				new ProfileDefinitionName(
-					"SDMN - Demodulating",
-					("Frequency", "RF Frequency [MHz]"),
-					("Modulation", "RF Modulation"),
-					("Roll Off", "RF Roll Off"),
-					("Symbol Rate", "RF Symbol Rate [MSymps]")),
-				new ProfileParameterId("Bit rate", "5f77cc21-290d-47eb-b28a-ca8015db2db1"),
+					"OrchestrationHelperExample - Test Definition",
+					("Frequency", "OrchestrationHelperExample - RF Frequency"),
+					("Modulation", "OrchestrationHelperExample - RF Modulation"),
+					("Roll Off", "OrchestrationHelperExample - RF Roll Off"),
+					("Symbol Rate", "OrchestrationHelperExample - RF Symbol Rate")),
+				new ProfileParameterId("Bit rate", "09a66ca2-8c12-4c76-9db5-5a415471871d"),
 			};
 		}
 
 		public override void Orchestrate(IEngine engine, OrchestrationHelperWithInfo helper)
 		{
-			// todo DCP257459 .ShowUI( / Script should eventually be marked as Interactivity:Always
+			// .ShowUI( (DCP257459)
 			engine.SetFlag(RunTimeFlags.NoInformationEvents); // Suggest to leave this in the final orchestration script template/example, since it's best to avoid these in production
 			engine.SetFlag(RunTimeFlags.NoKeyCaching);
 

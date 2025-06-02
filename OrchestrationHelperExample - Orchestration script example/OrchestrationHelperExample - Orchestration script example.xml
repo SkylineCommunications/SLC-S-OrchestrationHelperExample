@@ -10,7 +10,7 @@
 		<Protocol id="2">
 			<Description>device</Description>
 			<Name>Generic Dynamic Table</Name>
-			<Version>Production</Version>
+			<Version>1.0.0.4</Version>
 			<DefaultElement>
 			</DefaultElement>
 		</Protocol>

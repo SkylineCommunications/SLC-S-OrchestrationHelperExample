@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchestrationHelperExample 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrchestrationHelperExample - Orchestration script example", "OrchestrationHelperExample - Orchestration script example\OrchestrationHelperExample - Orchestration script example.csproj", "{DAC20681-877E-4631-962A-FEA6F4B4497F}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OrchestrationHelperExampleSetup", "OrchestrationHelperExampleSetup\OrchestrationHelperExampleSetup.shproj", "{A94F38F5-94E8-4FC2-8693-FFA5FF80BC2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		OrchestrationHelperExampleShared\OrchestrationHelperExampleShared.projitems*{606750e0-6dcc-4e0b-aa21-4e9871d8175e}*SharedItemsImports = 13
+		OrchestrationHelperExampleSetup\OrchestrationHelperExampleSetup.projitems*{a1bc4b20-7a16-4480-94c0-6cfb71ff9198}*SharedItemsImports = 5
+		OrchestrationHelperExampleSetup\OrchestrationHelperExampleSetup.projitems*{a94f38f5-94e8-4fc2-8693-ffa5ff80bc2a}*SharedItemsImports = 13
+		OrchestrationHelperExampleSetup\OrchestrationHelperExampleSetup.projitems*{c7d98251-e9a6-41cd-875f-226a0cf08d70}*SharedItemsImports = 5
 		OrchestrationHelperExampleShared\OrchestrationHelperExampleShared.projitems*{d527d3ee-6ddc-4d61-9589-1784749b44cd}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
