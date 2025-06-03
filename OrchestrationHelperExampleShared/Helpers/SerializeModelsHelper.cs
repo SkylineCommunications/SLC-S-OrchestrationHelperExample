@@ -4,6 +4,8 @@
 	using Models;
 	using Newtonsoft.Json;
 
+	// todo UT and check serializing exotic types (security)
+
 	public static class SerializeModelsHelper // todo non static for context? or move to 
 	{
 		public static string Serialize(ScriptInfo info) => JsonConvert.SerializeObject(info ?? throw new ArgumentNullException(nameof(info)));

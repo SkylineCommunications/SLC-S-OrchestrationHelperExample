@@ -104,7 +104,7 @@ namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Script.GetOrchestra
 
 		private void RunSafe(IEngine engine)
 		{
-			// todo DCP257459 .FindInteractiveClient( / Script should eventually be marked as Interactivity:Optional
+			// .FindInteractiveClient( (DCP257459)
 			var valueInfo = OrchestrationHelper.GetValueInfo(new Dictionary<DMAObjectRef, object>
 			{
 				{ new ProfileParameterID(Parameters.RfFrequency.Id), 12_345d },
