@@ -1,6 +1,8 @@
-# Technical Documentation for the OrchestrationHelper - Example
+# Technical Documentation for the OrchestrationHelper example
 
-This is a custom solution for DataMiner to demo the 'OnRequestScriptInfo' entry point. Details about the entry point are available here: [TODO](https://docs.dataminer.services/entry-points/orchestration-helper/on-request-script-info/).
+In this example solution for DataMiner a library was created, to easily implement Automation scripts that orchestrate a function of a device, resource or element. The 'OnRequestScriptInfo' entry point is used to detect which values, defined as profile parameters, such a script needs to perform the orchestration.
+
+Details about implementing the entry point in an Automation script will be available on the docs soon.
 
 ## Contents
 
@@ -15,7 +17,7 @@ Installing the solution package will deploy the following things:
 The scripts part of this example can be used to develop an orchestration helper based on that entry point. Each use case will be explained here.
 
 > [!NOTE]
-> The scripts are available in the folder *OrchestrationHelperExample* and are also prefixed with <em>OrchestrationHelperExample - </em>.
+> The scripts are available in the *OrchestrationHelperExample* folder and are also prefixed with <em>OrchestrationHelperExample - </em>.
 
 ### [Common](/OrchestrationHelperExample.Common)
 
@@ -54,7 +56,7 @@ Remarks:
 - The script ID of each parameter is matched case sensitive. To ease up the implementation that behavior could be reviewed.
 - Ideally the profile parameters are referenced by their name. For a user it is easier to copy/paste these from UI and they'll be easy to understand. Profile parameter, definition and instance names are not required to be unique, even if the UI lets you believe otherwise. It could be that duplicate names exist within the cluster, for instance if these types are imported from mixed function packages. The orchestration solution might set this as requirement of course.
 - In the example the `engine` parameter is available if some advanced logic is required, but that parameter could as well be removed.
-- The dummy, or any other script parameter or memory file this script has defined, might not be available at the time this method gets executed. This method gets called most likely, when the 'OnRequestScriptInfo' entry point is executed. The script arguments aren't required to be set in that case.
+- The dummy, or any other script parameter or memory file this script has defined, might not be available at the time this method gets executed. This method gets called most likely, when the `OnRequestScriptInfo` entry point is executed. The script arguments aren't required to be set in that case.
 
 #### `Orchestrate(IEngine engine, OrchestrationHelperWithInfo helper)`
 
