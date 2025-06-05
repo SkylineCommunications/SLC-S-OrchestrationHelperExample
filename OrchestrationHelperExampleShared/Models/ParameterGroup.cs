@@ -3,7 +3,7 @@
 	using Mvc.DisplayTypes;
 	using Skyline.DataMiner.Net;
 
-	public class ParameterGroup // todo move to info namespace
+	public class ParameterGroup
 	{
 		public string Description { get; set; }
 

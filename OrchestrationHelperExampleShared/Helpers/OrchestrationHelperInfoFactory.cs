@@ -1,5 +1,8 @@
 ﻿namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Helpers
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 	using Models;
 	using Mvc.Dialogs;
 	using ParameterProvider;
@@ -8,11 +11,6 @@
 	using Skyline.DataMiner.Net.Automation;
 	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Reflection;
-
 	using ParameterInfo = Models.ParameterInfo;
 
 	internal class OrchestrationHelperInfoFactory
@@ -28,51 +26,15 @@
 		public OrchestrationHelperInfoFactory(IEngine engine)
 		{
 			this.engine = engine ?? throw new ArgumentNullException(nameof(engine));
-			this.linkers = new List<IParameterLinker> // todo automatic / reflection?
+			linkers = new List<IParameterLinker>
 			{
 				new ProfileParameterProvider(engine),
-			};
-		}
-
-		// todo remove?
-		public static ExecuteScriptMessage GetExecuteScriptMessageFromSubScriptOptions(SubScriptOptions subScriptOptions) // todo remove and implement custom SubScriptOptions
-		{
-			var scriptArgsFieldInfo = typeof(SubScriptOptions).GetField("_scriptArgs", BindingFlags.Instance | BindingFlags.NonPublic);
-			var scriptArgs = scriptArgsFieldInfo.GetValue(subScriptOptions) as IEnumerable<string>;
-
-			// locking options
-			var flags = ScriptRunFlags.None;
-
-			if (subScriptOptions.LockElements)
-				flags |= ScriptRunFlags.Lock;
-			if (subScriptOptions.ForceLockElements)
-				flags |= ScriptRunFlags.ForceLock;
-			if (!subScriptOptions.WaitWhenLocked)
-				flags |= ScriptRunFlags.NoWait;
-
-			var options = new List<string>(scriptArgs)
-			{
-				$"DEFER:{(subScriptOptions.Synchronous ? "FALSE" : "TRUE")}",
-				$"CHECKSETS:{(subScriptOptions.PerformChecks ? "TRUE" : "FALSE")}",
-				$"SKIP_STARTED_INFO_EVENT:{(subScriptOptions.SkipStartedInfoEvent ? "TRUE" : "FALSE")}",
-				$"OPTIONS:{(int)flags}",
-			};
-
-			if (subScriptOptions.ExtendedErrorInfo)
-			{
-				options.Add("EXTENDED_ERROR_INFO");
-			}
-
-			return new ExecuteScriptMessage(subScriptOptions.ScriptName)
-			{
-				Options = new SA(options.ToArray()),
 			};
 		}
 
 		public List<ParameterInfo> CreateParameterInfos(ScriptInfo scriptInfo, ValueInfo valueInfo)
 		{
 			var parameterInfos = new List<ParameterInfo>(scriptInfo.ProfileParameters.Count);
-			var profileParameterInfos = new Dictionary<ProfileParameterID, ParameterInfo>(scriptInfo.ProfileParameters.Count); // todo remove
 
 			foreach (var profileParameter in scriptInfo.ProfileParameters)
 			{
@@ -84,12 +46,10 @@
 					Value = valueInfo.ProfileParameterValues.TryGetValue(profileParameter.Value, out var value) ? value : null,
 				};
 
-				profileParameterInfos[reference] = info;
-
 				parameterInfos.Add(info);
 			}
 
-			linkers.ForEach(x => x.LinkParameters(scriptInfo, parameterInfos)); // todo: pre group per linker?
+			linkers.ForEach(x => x.LinkParameters(scriptInfo, parameterInfos));
 
 			return parameterInfos;
 		}
@@ -187,13 +147,11 @@
 		{
 			var info = GetInputInfo(OrchestrationScriptAction.OrchestrationScriptInfo);
 
-
 			try
 			{
-				var subScriptInfo = engine.PrepareSubScript(scriptName, info);
+				var subScriptInfo = this.engine.PrepareSubScript(scriptName, info);
 				subScriptInfo.StartScript();
-				// todo had error
-				//var response = ExecuteScript(msg);
+				// Tip: add error handling
 
 				if (!(subScriptInfo.Output?.Data is IReadOnlyDictionary<string, string> returnedInfo))
 				{
@@ -208,7 +166,7 @@
 			}
 		}
 
-		public RequestScriptInfoInput GetInputInfo(OrchestrationScriptAction action, ScriptInput scriptInput) // todo static
+		public static RequestScriptInfoInput GetInputInfo(OrchestrationScriptAction action, ScriptInput scriptInput)
 		{
 			return GetInputInfo(
 				action,
@@ -232,7 +190,7 @@
 			};
 		}
 
-		private static ScriptInfo GetScriptInfo(IReadOnlyDictionary<string, string> resultDictionary, string source) // todo better naming
+		private static ScriptInfo GetScriptInfo(IReadOnlyDictionary<string, string> resultDictionary, string source)
 		{
 			if (!resultDictionary.TryGetValue(OrchestrationScriptInfoRequestScriptInfoKey, out var serializedScriptInfo))
 			{

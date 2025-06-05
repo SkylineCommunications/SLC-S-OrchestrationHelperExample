@@ -2,7 +2,7 @@
 {
 	using Sections;
 
-	public interface IParameterDisplayInfo // todo we go for the section immediately
+	public interface IParameterDisplayInfo
 	{
 		string Label { get; }
 

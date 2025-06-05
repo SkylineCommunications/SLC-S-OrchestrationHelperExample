@@ -1,10 +1,10 @@
 ﻿namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Mvc.Sections
 {
 	using System;
+	using System.Collections.Generic;
 	using DisplayTypes;
 	using Models;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
-	using System.Collections.Generic;
 
 	public abstract class ParameterGroupSection : Section
 	{

@@ -1,18 +1,16 @@
 namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Helpers
 {
+	using System;
+	using System.Collections.Generic;
 	using Models;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Net;
-	using Skyline.DataMiner.Net.Automation;
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
 
 	public static class OrchestrationHelper
 	{
 		public static ValueInfo GetValueInfo(IEnumerable<KeyValuePair<DMAObjectRef, object>> values)
 		{
-			var valueInfo = new ValueInfo(); // todo use DMAObjectRef
+			var valueInfo = new ValueInfo();
 
 			foreach (var kvp in values)
 			{
@@ -21,7 +19,7 @@ namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Helpers
 					valueInfo.ProfileParameterValues[profileParameterId.Id] = kvp.Value;
 				}
 
-				// todo add other types
+				// Tip: other types can be added here
 			}
 
 			return valueInfo;
@@ -59,17 +57,17 @@ namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Helpers
 			var action = askMissingValues ?
 				OrchestrationScriptAction.PerformOrchestrationAskMissingValues :
 				OrchestrationScriptAction.PerformOrchestration;
-			var subscript = engine.PrepareSubScript(scriptName, factory.GetInputInfo(action, scriptInput));
+			var subscript = engine.PrepareSubScript(scriptName, OrchestrationHelperInfoFactory.GetInputInfo(action, scriptInput));
 			prepareSubscript?.Invoke(subscript);
 			subscript.Synchronous = true;
 
-			// todo error handling
+			// Tip: error handling should be added
 			subscript.StartScript();
 
 			factory.HandlePerformOrchestrationEntryPointOutput(subscript);
 		}
 
-		public static ScriptInfoBuilder GetScriptInfo(IEngine engine) // todo return IScriptInfoGatherer instead
+		public static ScriptInfoBuilder GetScriptInfo(IEngine engine)
 		{
 			return new ScriptInfoBuilder(engine);
 		}

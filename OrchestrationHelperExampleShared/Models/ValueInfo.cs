@@ -5,6 +5,6 @@
 
 	public class ValueInfo
 	{
-		public Dictionary<Guid, object> ProfileParameterValues { get; } = new Dictionary<Guid, object>(); // todo only profile parameters are supported for now; create a dynamic parameter type
+		public Dictionary<Guid, object> ProfileParameterValues { get; } = new Dictionary<Guid, object>();
 	}
 }

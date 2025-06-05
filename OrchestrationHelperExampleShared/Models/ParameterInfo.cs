@@ -4,7 +4,7 @@
 	using Mvc.DisplayTypes;
 	using Skyline.DataMiner.Net;
 
-	public class ParameterInfo // todo move to info namespace
+	public class ParameterInfo
 	{
 		public string Description { get; set; }
 

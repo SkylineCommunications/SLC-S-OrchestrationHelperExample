@@ -1,17 +1,17 @@
 ﻿namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.ParameterProvider
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 	using Models;
 	using Mvc.DisplayTypes;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Net.Profiles;
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
+	using GroupPresetOption = Skyline.DataMiner.Utils.InteractiveAutomationScript.Option<Mvc.DisplayTypes.PresetGroupDisplayInfo.PresetInfo>;
 	using Parameter = Skyline.DataMiner.Net.Profiles.Parameter;
 	using ValueOption = Skyline.DataMiner.Utils.InteractiveAutomationScript.Option<object>;
-	using GroupPresetOption = Skyline.DataMiner.Utils.InteractiveAutomationScript.Option<Mvc.DisplayTypes.PresetGroupDisplayInfo.PresetInfo>;
 
 	internal class ProfileParameterProvider : IParameterLinker
 	{
@@ -68,7 +68,7 @@
 				throw new ArgumentNullException(nameof(getParameterName));
 			}
 
-			foreach (var parameter in profileDefinition.Parameters) // todo safe to use definition.Parameters, or is it inefficient?
+			foreach (var parameter in profileDefinition.Parameters)
 			{
 				var name = getParameterName(parameter);
 				if (name is null)
@@ -112,10 +112,11 @@
 						parameterInfo.ValueType = typeof(string);
 						break;
 
-					case InterpreteType.TypeEnum.HighNibble: // todo say what?
+					// Tip: the use case for these types is unclear. Perhaps using them should fail.
+					case InterpreteType.TypeEnum.HighNibble:
 					case InterpreteType.TypeEnum.Undefined:
 					default:
-						parameterInfo.ValueType = typeof(object); // todo review
+						parameterInfo.ValueType = typeof(object);
 						break;
 				}
 
@@ -129,10 +130,13 @@
 							{
 								if (discreet.GetType() != parameterInfo.ValueType)
 								{
-									continue; // todo warn or fail
+									// Tip: warn or fail when this happens
+									continue;
 								}
 
 								var display = queue.Dequeue();
+
+								// Tip: make sure the display value is unique
 								options.Add(new ValueOption(display, discreet));
 							}
 
@@ -165,7 +169,7 @@
 				}
 			}
 
-			// todo warn/fail for missing parameters
+			// Tip: add checks for missing parameters
 
 			AssignProfileDefinitionGroups(scriptInfo.ProfileDefinitions, profileParameterInfos);
 		}
@@ -179,15 +183,15 @@
 
 			foreach (var definition in profileDefinitions)
 			{
-				// todo possible improvement to get all instances for all definitions
-
+				// Tip: If there are allot of definitions, getting all instances in one call will be more efficient.
 				var instances = profileHelper.ProfileInstances.Read(ProfileInstanceExposers.AppliesToID.Equal(definition.ID));
 
 				var presets = new List<GroupPresetOption>(instances.Count);
 				foreach (var instance in instances)
 				{
 					var presetInfo = new PresetGroupDisplayInfo.PresetInfo();
-					presets.Add(new GroupPresetOption(instance.Name, presetInfo)); // todo name should be unique
+					// Tip: add a check if the option names are unique
+					presets.Add(new GroupPresetOption(instance.Name, presetInfo));
 
 					foreach (var value in instance.Values)
 					{
@@ -207,7 +211,7 @@
 								break;
 
 							default:
-								throw new NotSupportedException($"No support for type {value.Value.Type} (Parameter ID: {value.ParameterID}; Profile Instance ID: {instance.ID})"); // todo or skip?
+								throw new NotSupportedException($"No support for type {value.Value.Type} (Parameter ID: {value.ParameterID}; Profile Instance ID: {instance.ID})");
 						}
 					}
 				}

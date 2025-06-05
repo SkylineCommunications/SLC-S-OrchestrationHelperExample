@@ -8,7 +8,7 @@
 	{
 		public string Label { get; set; }
 
-		public List<Option<object>> Options { get; set; } // todo: note display value should be unique!
+		public List<Option<object>> Options { get; set; }
 
 		public ParameterSection CreateParameterSection()
 		{

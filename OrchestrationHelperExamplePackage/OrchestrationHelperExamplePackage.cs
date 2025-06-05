@@ -53,12 +53,12 @@ using System;
 using System.Linq;
 using Skyline.AppInstaller;
 using Skyline.DataMiner.Automation;
-using Skyline.DataMiner.Net.AppPackages;
-using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Setup;
-using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Setup.TestProfilesInfo;
 using Skyline.DataMiner.Core.DataMinerSystem.Automation;
 using Skyline.DataMiner.Core.DataMinerSystem.Common;
+using Skyline.DataMiner.Net.AppPackages;
 using Skyline.DataMiner.Net.Profiles;
+using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Setup;
+using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Setup.TestProfilesInfo;
 
 /// <summary>
 /// DataMiner Script Class.

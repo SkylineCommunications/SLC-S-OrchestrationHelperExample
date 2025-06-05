@@ -28,7 +28,7 @@
 
 		public override void SetValue(object value)
 		{
-			Value.SelectedOption = Value.Options.SingleOrDefault(x => Equals(value, x.Value)); // todo nice throw?
+			Value.SelectedOption = Value.Options.SingleOrDefault(x => Equals(value, x.Value));
 		}
 
 		public override object GetValue()

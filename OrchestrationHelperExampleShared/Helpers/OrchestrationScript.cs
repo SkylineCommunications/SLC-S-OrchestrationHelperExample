@@ -2,8 +2,8 @@ namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Helpers
 {
 	using System;
 	using System.Collections.Generic;
-	using Models;
 	using System.Linq;
+	using Models;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Net.Automation;
 

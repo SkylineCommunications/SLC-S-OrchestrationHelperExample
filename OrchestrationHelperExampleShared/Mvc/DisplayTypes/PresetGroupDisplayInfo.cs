@@ -9,7 +9,7 @@
 	{
 		public string Label { get; set; }
 
-		public List<Option<PresetInfo>> Presets { get; set; } // todo: note display value should be unique!
+		public List<Option<PresetInfo>> Presets { get; set; }
 
 		public ParameterGroupSection CreateParameterGroupSection()
 		{

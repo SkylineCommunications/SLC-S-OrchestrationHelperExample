@@ -1,9 +1,9 @@
 ﻿namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Helpers
 {
+	using System;
 	using Models;
 	using ParameterProvider;
 	using Skyline.DataMiner.Automation;
-	using System;
 
 	public class ScriptInfoBuilder
 	{
@@ -26,8 +26,7 @@
 
 		public ScriptInfoBuilder WithProfileDefinition(string profileDefinitionName, params (string id, string profileParameterName)[] links)
 		{
-			// todo validate if IDs already exists: fail? where?
-			// todo how to gather errors: does definition exist? does parameter exist?
+			// Tip: add validation if id already exists
 			profileParameterProvider.AddProfileDefinition(scriptInfo, profileDefinitionName, links);
 			return this;
 		}
@@ -42,7 +41,7 @@
 				throw new ArgumentNullException(nameof(id));
 			}
 
-			// todo validate if ID already exists: fail? where?
+			// Tip: add validation if id already exists
 			scriptInfo.ProfileParameters[id] = profileParameterId;
 			return this;
 		}

@@ -1,8 +1,8 @@
 ﻿namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Mvc.Dialogs
 {
 	using System.Collections.Generic;
-	using Sections;
 	using Models;
+	using Sections;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
@@ -68,14 +68,14 @@
 			}
 		}
 
-		private static void InitializeGroupSection(ParameterGroup group, IEnumerable<ParameterInfo> parameterInfos, List<(ParameterInfo info, ParameterSection section)> parameterSections, List<Section> sectionsToDisplay) // todo extension method?
+		private static void InitializeGroupSection(ParameterGroup group, IEnumerable<ParameterInfo> parameterInfos, List<(ParameterInfo info, ParameterSection section)> parameterSections, List<Section> sectionsToDisplay)
 		{
 			var section = group.DisplayInfo.CreateParameterGroupSection();
-			parameterSections.AddRange(section.InitializeSection(parameterInfos)); // todo support setting a value for the group
+			parameterSections.AddRange(section.InitializeSection(parameterInfos));
 			sectionsToDisplay.Add(section);
 		}
 
-		private static ParameterSection InitializeParameterSection(ParameterInfo info) // todo extension method?
+		private static ParameterSection InitializeParameterSection(ParameterInfo info)
 		{
 			var section = info.DisplayInfo.CreateParameterSection();
 			section.InitializeSection();

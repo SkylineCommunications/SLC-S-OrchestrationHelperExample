@@ -56,7 +56,7 @@
 
 		public override void SetValue(object value)
 		{
-			Value.Value = value is null ? 0 : (double)value; // todo correct check + nice throw?
+			Value.Value = value is null ? 0 : (double)value;
 		}
 
 		public override object GetValue()

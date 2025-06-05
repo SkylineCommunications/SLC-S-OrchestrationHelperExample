@@ -1,5 +1,4 @@
 ﻿using System;
-using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Helpers;
@@ -91,8 +90,7 @@ namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Tests
 			Assert.That(deserializedInfo.ValueInfo, Is.Null);
 		}
 
-		// todo test deserialize null
-		// todo test backwards compatibility
+		// Tip: add a test deserializing null
 
 		private static void AssertScriptInfo(ScriptInfo expectedInfo, ScriptInfo actualInfo)
 		{
