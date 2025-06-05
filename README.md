@@ -29,26 +29,37 @@ This script is the actual orchestration script. The `Script` class implements th
 
 Executing the script will display a basic dialog to request a value for each defined parameter. After the confirming the dialog those values get applied to the dummy that was selected when executing the script.
 
-A high level overview:
+Flow:
 
 ```mermaid
 sequenceDiagram
-    actor U as User
-    participant E as Orchestration script example
-    participant O as OrchestrationScript (Common)
-    U-->>+E: Select 'device' and execute
-    E->>+O: 'Run' method gets executed
-    O->>E: Get the parameters,<br/>needed for orchestration<br/>(GetParameters)
-    O-->>U: Request values
-    U-->>O: Confirm entered values
-    O->>E: Apply the values to 'device'<br/>(Orchestrate)
+  actor U as User
+  
+  U -->> O: Execute 'Orchestration script example' <br/> for 'Test device'<br/>'Run' method gets executed
+
+  box Orchestration script example
+  participant O as OrchestrationScript<br/>(Common)
+  participant E as Script
+  end
+
+  O <<->>+ E: Get the parameters,<br/>needed for orchestration<br/>(GetParameters)
+
+  create participant P as ProfileParameterProvider<br/>(Common)
+  O ->> P: Gather profile parameter info 
+  destroy P
+  P ->> O: Update Parameter info with<br/>type, display info and definition group
+    
+  O -->> U: Show dialog requesting<br/>parameter value(s)  
+  U -->> O: Confirms entered values  
+  
+  O ->> E: Orchestrate 'Test device'<br/>using entered values
 ```
 
 #### `GetParameters(IEngine engine)`
 
 Basically needs to return a list of parameters that the orchestration script needs, together with a link to the profile parameter.
 
-Each parameter has an ID that is unique within the script. That parameter is then used in `Orchestrate` to get the value that was gathered.
+Each parameter has an ID that is unique within the script. That parameter is then used in `Orchestrate` to get the value that was provided.
 
 Remarks:
 
