@@ -1,6 +1,6 @@
 # Technical Documentation for the OrchestrationHelper example
 
-In this example solution for DataMiner a library was created, to easily implement Automation scripts that orchestrate a function of a device, resource or element. The [OnRequestScriptInfo](https://docs.dataminer.services/develop/api/types/Skyline.DataMiner.Automation.AutomationEntryPointType.Types.html#Skyline_DataMiner_Automation_AutomationEntryPointType_Types_OnRequestScriptInfo) entry point is used to detect which values, defined as profile parameters, such a script needs to perform the orchestration.
+In this example solution for DataMiner, a library was created to easily implement Automation scripts that orchestrate a function of a device, resource or element. The [OnRequestScriptInfo](https://docs.dataminer.services/develop/api/types/Skyline.DataMiner.Automation.AutomationEntryPointType.Types.html#Skyline_DataMiner_Automation_AutomationEntryPointType_Types_OnRequestScriptInfo) entry point is used to detect which values, defined as profile parameters, such a script needs to perform the orchestration.
 
 Details about implementing the entry point in an Automation script will be available [in this how-to](https://docs.dataminer.services/develop/devguide/Automation/Howto/Implementing_OnRequestScriptInfo_Entry_Point.html).
 
@@ -27,7 +27,7 @@ The library script of this example that contains the common logic and gets refer
 
 This script is the actual orchestration script. The `Script` class implements the [`OrchestrationScript` class](OrchestrationHelperExampleShared/Helpers/OrchestrationScript.cs) so the complexity of implementing the entry point can be obfuscated for the user implementing the orchestration script.
 
-Executing the script will display a basic dialog to request a value for each defined parameter. After the confirming the dialog those values get applied to the dummy that was selected when executing the script.
+Executing the script will display a basic dialog to request a value for each defined parameter. After confirming the dialog, those values get applied to the dummy that was selected when executing the script.
 
 Flow:
 
@@ -57,15 +57,15 @@ sequenceDiagram
 
 #### `GetParameters(IEngine engine)`
 
-Basically needs to return a list of parameters that the orchestration script needs, together with a link to the profile parameter.
+This method needs to return a list of parameters that the orchestration script needs, together with a link to the profile parameter.
 
 Each parameter has an ID that is unique within the script. That parameter is then used in `Orchestrate` to get the value that was provided.
 
-Remarks:
+Example remarks and potential improvements:
 
 - The script ID of each parameter isn't checked for its uniqueness. It might be worth adding such check to avoid confusion.
 - The script ID of each parameter is matched case sensitive. To ease up the implementation of an orchestration script, that behavior could be reviewed.
-- Ideally the profile parameters are referenced by their name. For a user it is easier to copy/paste these from UI and they'll be easy to understand. Profile parameter, definition and instance names are not required to be unique, even if the Cube UI suggests otherwise. It could be that duplicate names exist within the cluster, for instance if these types are imported from mixed function packages. The orchestration solution might set this as requirement of course.
+- Ideally the profile parameters are referenced by their name. For a user, it is easier to copy/paste these from a UI and they'll be easy to understand. Profile parameter, definition and instance names are not required to be unique, even if the Cube UI suggests otherwise. It could be that duplicate names exist within the cluster, for instance if these types are imported from mixed function packages. The orchestration solution might set this as requirement of course.
 - In the example the `engine` parameter is passed to the method for completeness. That input parameter might as well be removed, since interaction with Automation or DataMiner is best to be avoided to keep the execution time of this method limited.
 - The dummy, or any other script parameter or memory file this script has defined, might not be available at the time this method gets executed. This method gets called most likely, when the `OnRequestScriptInfo` entry point is executed. The script arguments aren't required to be set in that case.
 
@@ -77,20 +77,20 @@ The helper that gets passed allows to get parameter values that were provided or
 
 `helper.GetParameterInfos()` (not used in the example) will return the info for all Parameters together with their provided values.
 
-Remarks:
+Example remarks and potential improvements:
 
-- Ideally the orchestration get extended with a logging framework, so issues, debug info and timing can be easily checked within the solution that will execute these orchestration scripts. In this example no logging was introduced.
+- Ideally, the orchestration should be extended with a logging framework, so issues, debug info and timing can be easily checked within the solution that will execute these orchestration scripts. In this example no logging was introduced.
 - `.ShowUI(` was added to trick the Automation module in believing this is an automation script that requires interactivity. Task [DCP257459](https://collaboration.dataminer.services/task/257459) will add a feature allowing to clearly enforce that option in the XML of the script. This script should eventually be marked as *Interactivity*/*Always*.
-- When using *SetParameter* an automation script will generate an information event with the value that was set. Since generating these is strongly discouraged, it might be worth disabling that by adding the following in the `OrchestrationHelper` or in the orchestration script template:
+- When using *SetParameter*, an automation script will generate an information event with the value that was set. Since generating these is strongly discouraged, it might be worth disabling that by adding the following in the `OrchestrationHelper` or in the orchestration script template:
 `engine.SetFlag(RunTimeFlags.NoInformationEvents)`.
 
 #### Linking the script
 
-At the time a device, resource or element needs to be orchestrated the script responsible for the orchestration will need to be available for the orchestration helper.
+At the time a device, resource or element needs to be orchestrated, the script responsible for the orchestration will need to be available for the orchestration helper.
 
 Currently the name of such a script is stored in the Profile Definition (ref. Scripts region in the Cube UI).
 
-The Profile Definition is now defined in the script itself, so the above option has become less viable. It could from now on be stored on the Resource Pool level, for instance.
+The Profile Definition is now defined in the script itself, so the above option has become less viable. It could from now on be stored on the Resource Pool level instead.
 
 ### [Get orchestration Info](/OrchestrationHelperExample%20-%20Get%20Orchestration%20Info/OrchestrationHelperExample%20-%20Get%20Orchestration%20Info.cs)
 
@@ -137,8 +137,8 @@ This example script will orchestrate the test device. It has some predefined val
 
 Similar to the 'Get orchestration Info' script, this example script will gather all the parameter info available in an orchestration script. It will check if all values are available.
 
-Since the 'askMissingValues' is set to true when executing 'Orchestrate' the value for 'Bit rate' will be requested before the orchestration is started. When 'askMissingValues' is set to false, the value for the missing parameters will be `null`.
-Adding the following line the following line to value dictionary will set a value for that parameter:
+Since the 'askMissingValues' is set to true when executing 'Orchestrate', the value for 'Bit rate' will be requested before the orchestration is started. When 'askMissingValues' is set to false, the value for the missing parameters will be `null`.
+Adding the following line to the dictionary will set a value for that parameter:
 
 ```csharp
 { new ProfileParameterID(Parameters.BitRate.Id), 3d },
@@ -146,7 +146,7 @@ Adding the following line the following line to value dictionary will set a valu
 
 No values will be requested and the orchestration will immediately start.
 
-Remark: `.FindInteractiveClient(` was added to trick the Automation module in believing this is an automation script that might display interactivity. Task [DCP257459](https://collaboration.dataminer.services/task/257459) will add a feature allowing to clearly enforce that option in the XML of the script. This script should eventually be marked as *Interactivity*/*Optional*.
+**Remark:** `.FindInteractiveClient(` was added to trick the Automation module in believing this is an automation script that might display interactivity. Task [DCP257459](https://collaboration.dataminer.services/task/257459) will add a feature allowing to clearly enforce that option in the XML of the script. This script should eventually be marked as *Interactivity*/*Optional*.
 
 Flow:
 
