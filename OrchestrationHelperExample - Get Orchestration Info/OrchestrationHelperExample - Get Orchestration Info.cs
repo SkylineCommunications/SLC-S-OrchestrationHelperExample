@@ -52,6 +52,7 @@ DATE		VERSION		AUTHOR			COMMENTS
 namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Script.GetOrchestrationInfo
 {
 	using System;
+	using System.Text;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Utils.OrchestrationHelperExample.Common.Helpers;
 
@@ -99,12 +100,18 @@ namespace Skyline.DataMiner.Utils.OrchestrationHelperExample.Script.GetOrchestra
 
 		private void RunSafe(IEngine engine)
 		{
-			var parameterInfos = OrchestrationHelper.RequestScriptInfo(engine, engine.GetScriptParam("Script Name").Value);
+			var scriptName = engine.GetScriptParam("Script Name").Value;
+			var parameterInfos = OrchestrationHelper.RequestScriptInfo(engine, scriptName);
 
+			var logMessage = new StringBuilder($"The following parameters were found for script '{scriptName}':");
 			foreach (var parameterInfo in parameterInfos)
 			{
-				engine.GenerateInformation($"Got parameter '{parameterInfo.Id}' ({parameterInfo.Type}) '{parameterInfo.Description}' with ref {parameterInfo.Reference} of type {parameterInfo.ValueType}");
+				logMessage
+					.AppendLine()
+					.Append($"  - '{parameterInfo.Id}' ({parameterInfo.Type}) '{parameterInfo.Description}' with ref {parameterInfo.Reference} of type {parameterInfo.ValueType}");
 			}
+
+			engine.Log(logMessage.ToString());
 		}
 	}
 }
