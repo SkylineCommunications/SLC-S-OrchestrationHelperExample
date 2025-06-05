@@ -1,8 +1,8 @@
 # Technical Documentation for the OrchestrationHelper example
 
-In this example solution for DataMiner, a library was created to easily implement Automation scripts that orchestrate a function of a device, resource or element. The [OnRequestScriptInfo](https://docs.dataminer.services/develop/api/types/Skyline.DataMiner.Automation.AutomationEntryPointType.Types.html#Skyline_DataMiner_Automation_AutomationEntryPointType_Types_OnRequestScriptInfo) entry point is used to detect which values, defined as profile parameters, such a script needs to perform the orchestration.
+In this example solution for DataMiner, a library was created to easily implement Automation scripts that orchestrate a function of a device, resource or element. The 'OnRequestScriptInfo' entry point is used to detect which values, defined as profile parameters, such a script needs to perform the orchestration.
 
-Details about implementing the entry point in an Automation script will be available [in this how-to](https://docs.dataminer.services/develop/devguide/Automation/Howto/Implementing_OnRequestScriptInfo_Entry_Point.html).
+Details about implementing the entry point in an Automation script will be available on the docs soon.
 
 ## Contents
 
@@ -67,7 +67,7 @@ Example remarks and potential improvements:
 - The script ID of each parameter is matched case sensitive. To ease up the implementation of an orchestration script, that behavior could be reviewed.
 - Ideally the profile parameters are referenced by their name. For a user, it is easier to copy/paste these from a UI and they'll be easy to understand. Profile parameter, definition and instance names are not required to be unique, even if the Cube UI suggests otherwise. It could be that duplicate names exist within the cluster, for instance if these types are imported from mixed function packages. The orchestration solution might set this as requirement of course.
 - In the example the `engine` parameter is passed to the method for completeness. That input parameter might as well be removed, since interaction with Automation or DataMiner is best to be avoided to keep the execution time of this method limited.
-- The dummy, or any other script parameter or memory file this script has defined, might not be available at the time this method gets executed. This method gets called most likely, when the `OnRequestScriptInfo` entry point is executed. The script arguments aren't required to be set in that case.
+- Any dummies, script parameter or memory files this script has defined, might not be available at the time this method gets executed. This method gets called most likely when the `OnRequestScriptInfo` entry point is executed. The script arguments aren't required to be set in that case.
 
 #### `Orchestrate(IEngine engine, OrchestrationHelperWithInfo helper)`
 
@@ -88,9 +88,7 @@ Example remarks and potential improvements:
 
 At the time a device, resource or element needs to be orchestrated, the script responsible for the orchestration will need to be available for the orchestration helper.
 
-Currently the name of such a script is stored in the Profile Definition (ref. Scripts region in the Cube UI).
-
-The Profile Definition is now defined in the script itself, so the above option has become less viable. It could from now on be stored on the Resource Pool level instead.
+A Profile Definition allows storing the names for scripts that apply them (ref. Scripts region in the Cube UI). The Profile Definition is now defined in the script itself, so this option has become less viable. It could from now on be stored on the Resource Pool level instead.
 
 ### [Get orchestration Info](/OrchestrationHelperExample%20-%20Get%20Orchestration%20Info/OrchestrationHelperExample%20-%20Get%20Orchestration%20Info.cs)
 
@@ -152,11 +150,14 @@ Flow:
 
 ```mermaid
 sequenceDiagram
+  actor U as User
   box Perform Orchestration
   participant PO as Script
   participant H as OrchestrationHelper<br/>(Common)
   end
   
+  U -->> PO: Execute 'Perform Orchestration'
+
   PO ->> H: Orchestrate 'Test Device' using <br>'Orchestration script example'
 
   box Orchestration script example
@@ -173,9 +174,7 @@ sequenceDiagram
   destroy P
   P ->> O: Update Parameter info with<br/>type, display info and definition group
 
-  create actor U as User
   O -->> U: Show dialog requesting<br/>missing parameter value(s)
-  destroy U
   U -->> O: Confirms entered values  
   
   O ->> E: Orchestrate dummy<br/>using all available values
