@@ -60,7 +60,7 @@ documentation_url: https://github.com/SkylineCommunications/SLC-S-OrchestrationH
 #   The email and URL are optional, and should be in valid email/URL formats.
 owners:
   - name: 'Peter Vanpoucke'
-  - email: 'peter.vanpoucke@skyline.be'
+    email: 'peter.vanpoucke@skyline.be'
   
 # [Optional]
 # Tags that allow you to categorize your Catalog items.
