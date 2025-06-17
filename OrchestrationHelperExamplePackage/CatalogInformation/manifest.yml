@@ -39,7 +39,7 @@ title: OrchestrationHelper - Example
 # [Optional]
 # General information about the Catalog item.
 #   Max length: 100,000 characters
-short_description: This is a custom solution for DataMiner to demo the 'OnRequestScriptInfo' entry point.
+short_description: This is a sample solution for DataMiner to demo the 'OnRequestScriptInfo' entry point.
 
 # [Optional]
 # A valid URL that points to the source code.
